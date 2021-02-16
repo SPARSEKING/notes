@@ -10,14 +10,14 @@ const routes: Array<RouteRecordRaw> = [
     component: Note
   },
   {
-    path: "/",
-    name: "About",
-    component: About
-  },
-  {
     path: "/authorization",
     name: "Authorization",
     component: Authorization
+  },
+  {
+    path: "/",
+    name: "About",
+    component: About
   }
 ];
 

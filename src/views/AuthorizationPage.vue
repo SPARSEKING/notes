@@ -1,7 +1,7 @@
 <template>
   <modals v-show="user.show" title="Sign In" @close="user.show = false">
     <template v-slot:body>
-      <form @submit.prevent="logIn">
+      <form @submit.prevent="">
         <label>Login</label>
         <input
           type="text"
@@ -14,7 +14,7 @@
           @input="e => (user.password = e.target.value)"
           :value="user.password"
         />
-        <button id="button-second" class="button-new-note" @click="showParam">
+        <button id="button-second" class="button-new-note" @click="logIn">
           Sign In
         </button>
       </form>
