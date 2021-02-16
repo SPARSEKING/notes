@@ -27,10 +27,6 @@ export default defineComponent({
     return {
       links: [
         {
-          title: "Note",
-          url: "/note"
-        },
-        {
           title: "About",
           url: "/"
         },
@@ -38,8 +34,43 @@ export default defineComponent({
           title: "Sign In",
           url: "/authorization"
         }
-      ]
+      ],
+      auth: false,
+      user: {
+        login: "",
+        password: "",
+        show: true
+      }
     };
+  },
+  provide() {
+    return {
+      auth: this.auth,
+      user: this.user,
+      logIn: this.logIn,
+      logOut: this.logOut
+    };
+  },
+  methods: {
+    logIn() {
+      if (this.user.login != "" && this.user.password != "") {
+        localStorage.setItem("auth", "true");
+        this.links.unshift({
+          title: "Note",
+          url: "/note"
+        });
+        this.links[1].title = "Log Out";
+      }
+      this.user.login = "";
+      this.user.password = "";
+      this.user.show = false;
+    },
+    logOut() {
+      if (this.user.login === "" && this.user.password === "") {
+        localStorage.removeItem("auth");
+        delete this.links[0];
+      }
+    }
   }
 });
 </script>
