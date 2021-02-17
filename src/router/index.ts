@@ -26,4 +26,19 @@ const router = createRouter({
   routes
 });
 
+router.beforeEach(function(to, _from, next) {
+  if(to.path === "/note") {
+    if(localStorage.getItem("auth") !== "true") {
+      next("/authorization");
+    }
+    next();
+  } else if(to.path === "/authorization") {
+    if(localStorage.getItem("auth") === "true") {
+      next("note");
+    }
+    next();
+  }
+  next();
+});
+
 export default router;

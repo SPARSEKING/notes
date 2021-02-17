@@ -106,9 +106,10 @@ export default defineComponent({
       this.user.login = "";
       this.user.password = "";
       this.user.show = false;
+      this.$router.push("/note");
     },
     logout() {
-      if (this.auth){
+      if (this.auth) {
         localStorage.removeItem("auth");
         this.$router.push("/authorization");
         this.linksAuth[0].flag = !this.linksAuth[0].flag;
