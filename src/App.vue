@@ -6,21 +6,32 @@
         <div class="navbar-content">
           <div class="logo">NOTES-APP</div>
           <ul class="navbar-list" v-if="auth">
-            <li class="navbar-item" v-for="link in linksAuth" :key="link.title">
+            <!-- <li class="navbar-item" v-for="link in linksAuth" :key="link.title">
               <router-link
                 class="navbar-link"
-                v-if="link.title === 'Sign Out' || 'Sign In'"
-                @click="user.show = !user.show"
+                v-if="link.title === 'Sign Out'"
+                @click="user.show = !user.show && logout"
                 :to="link.url"
                 >{{ link.title }}</router-link
               >
               <router-link class="navbar-link" v-else :to="link.url">{{
                 link.title
               }}</router-link>
+            </li> -->
+            <li class="navbar-item">
+              <router-link class="navbar-link" to="/note">Note</router-link>
+            </li>
+            <li class="navbar-item">
+              <router-link class="navbar-link" to="/">About</router-link>
+            </li>
+            <li class="navbar-item">
+              <router-link class="navbar-link" to="/authorization"
+                >Sign Out</router-link
+              >
             </li>
           </ul>
           <ul class="navbar-list" v-else>
-            <li
+            <!-- <li
               class="navbar-item"
               v-for="link in linksLogout"
               :key="link.title"
@@ -28,13 +39,24 @@
               <router-link
                 class="navbar-link"
                 v-if="link.title === 'Sign In'"
-                @click="user.show = !user.show"
+                @click="clickSignOut"
                 :to="link.url"
                 >{{ link.title }}</router-link
               >
               <router-link class="navbar-link" v-else :to="link.url">{{
                 link.title
               }}</router-link>
+            </li> -->
+            <li class="navbar-item">
+              <router-link class="navbar-link" to="/">About</router-link>
+            </li>
+            <li class="navbar-item">
+              <router-link
+                @click="user.show = !user.show"
+                class="navbar-link"
+                to="/authorization"
+                >Sign In</router-link
+              >
             </li>
           </ul>
         </div>
@@ -51,30 +73,6 @@ export default defineComponent({
   name: "App",
   data() {
     return {
-      linksAuth: [
-        {
-          title: "Note",
-          url: "/note"
-        },
-        {
-          title: "About",
-          url: "/"
-        },
-        {
-          title: "Sign Out",
-          url: "/authorization"
-        }
-      ],
-      linksLogout: [
-        {
-          title: "About",
-          url: "/"
-        },
-        {
-          title: "Sign In",
-          url: "/authorization"
-        }
-      ],
       auth: false,
       user: {
         login: "",

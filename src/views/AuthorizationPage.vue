@@ -1,7 +1,7 @@
 <template>
   <modals v-show="user.show" title="Sign In" @close="user.show = false">
     <template v-slot:body>
-      <form @submit.prevent="">
+      <form @submit.prevent="logIn">
         <label>Login</label>
         <input
           type="text"
