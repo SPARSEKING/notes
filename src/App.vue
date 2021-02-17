@@ -6,66 +6,51 @@
         <div class="navbar-content">
           <div class="logo">NOTES-APP</div>
           <ul class="navbar-list" v-if="auth">
-            <!-- <li class="navbar-item" v-for="link in linksAuth" :key="link.title">
-              <router-link
-                class="navbar-link"
-                v-if="link.title === 'Sign Out'"
-                @click="user.show = !user.show && logout"
-                :to="link.url"
-                >{{ link.title }}</router-link
-              >
-              <router-link class="navbar-link" v-else :to="link.url">{{
-                link.title
+            <li class="navbar-item">
+              <router-link class="navbar-link" :to="linksAuth[0].url">{{
+                linksAuth[0].title
               }}</router-link>
-            </li> -->
-            <li class="navbar-item">
-              <router-link class="navbar-link" to="/note">Note</router-link>
             </li>
             <li class="navbar-item">
-              <router-link class="navbar-link" to="/">About</router-link>
+              <router-link class="navbar-link" :to="linksAuth[1].url">{{
+                linksAuth[1].title
+              }}</router-link>
             </li>
             <li class="navbar-item">
-              <router-link class="navbar-link" to="/authorization"
-                >Sign Out</router-link
-              >
+              <a class="navbar-link" @click="logout">
+                Sign Out
+              </a>
             </li>
           </ul>
           <ul class="navbar-list" v-else>
-            <!-- <li
-              class="navbar-item"
-              v-for="link in linksLogout"
-              :key="link.title"
-            >
-              <router-link
-                class="navbar-link"
-                v-if="link.title === 'Sign In'"
-                @click="clickSignOut"
-                :to="link.url"
-                >{{ link.title }}</router-link
-              >
-              <router-link class="navbar-link" v-else :to="link.url">{{
-                link.title
-              }}</router-link>
-            </li> -->
-            <li class="navbar-item">
-              <router-link class="navbar-link" to="/">About</router-link>
+            <li class="navbar-item" v-if="clicklog">
+              <router-link class="navbar-link" to="/note">Note</router-link>
             </li>
             <li class="navbar-item">
-              <router-link
-                @click="user.show = !user.show"
-                class="navbar-link"
-                to="/authorization"
-                >Sign In</router-link
-              >
+              <router-link class="navbar-link" :to="linksLogout[0].url">{{
+                linksLogout[0].title
+              }}</router-link>
+            </li>
+            <li
+              class="navbar-item"
+              v-if="linksLogout[1].flag"
+              @click="user.show = !user.show"
+            >
+              <router-link class="navbar-link" :to="linksLogout[1].url">{{
+                linksLogout[1].title
+              }}</router-link>
+            </li>
+            <li class="navbar-item" v-if="!linksLogout[1].flag">
+              <a class="navbar-link" @click="logout">Sign Out</a>
             </li>
           </ul>
         </div>
       </div>
     </div>
   </header>
+  <!-- this.$router.push(/authorization) -->
   <router-view />
 </template>
-
 <script lang="ts">
 import { defineComponent } from "vue";
 
@@ -73,6 +58,29 @@ export default defineComponent({
   name: "App",
   data() {
     return {
+      linksAuth: [
+        {
+          title: "Note",
+          url: "/note",
+          flag: true
+        },
+        {
+          title: "About",
+          url: "/"
+        }
+      ],
+      linksLogout: [
+        {
+          title: "About",
+          url: "/"
+        },
+        {
+          title: "Sign In",
+          url: "/authorization",
+          flag: true
+        }
+      ],
+      clicklog: false,
       auth: false,
       user: {
         login: "",
@@ -92,17 +100,31 @@ export default defineComponent({
     logIn() {
       if (this.user.login != "" && this.user.password != "") {
         localStorage.setItem("auth", "true");
+        this.clicklog = true;
+        this.linksLogout[1].flag = !this.linksLogout[1].flag;
       }
       this.user.login = "";
       this.user.password = "";
       this.user.show = false;
     },
     logout() {
-      localStorage.removeItem("auth");
+      if (this.auth){
+        localStorage.removeItem("auth");
+        this.$router.push("/authorization");
+        this.linksAuth[0].flag = !this.linksAuth[0].flag;
+        this.user.show = true;
+      } else {
+        localStorage.removeItem("auth");
+        this.$router.push("/authorization");
+        this.clicklog = false;
+        this.linksLogout[1].flag = !this.linksLogout[1].flag;
+        this.user.show = true;
+      }
     }
   },
   created() {
     this.auth = localStorage.getItem("auth") === "true";
+    this.linksAuth[0].flag = true;
   }
 });
 </script>
