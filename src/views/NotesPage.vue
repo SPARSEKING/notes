@@ -6,7 +6,7 @@
           <message v-if="message" :message="message" />
           <new-note :note="note" @addNote="addNote" />
           <div class="note-head">
-            <h1 class="container-title">{{ printLogo }}</h1>
+            <h1 class="container-title">{{ title }}</h1>
             <search
               :value="search"
               placeholder="Find your note"
@@ -55,7 +55,7 @@
               </svg>
             </div>
           </div>
-          <notes :notes="printNotes" :grid="grid" @remove="removeNote" />
+          <notes :notes="notesFilter" :grid="grid" @remove="removeNote" />
         </div>
       </section>
     </div>
@@ -63,13 +63,12 @@
 </template>
 
 <script lang="ts">
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import { defineComponent } from "vue";
 import message from "@/components/Message.vue";
 import newNote from "@/components/NewNote.vue";
 import notes from "@/components/Notes.vue";
 import search from "@/components/Search.vue";
-import { Note } from "@/Note";
 import { NotesApp } from "@/NotesApp";
 
 export default defineComponent({
@@ -82,45 +81,48 @@ export default defineComponent({
   },
   data() {
     return {
+      title: "Notes App",
       message: null,
       grid: true,
       search: ""
     } as NotesApp;
   },
   computed: {
-    ...mapGetters(["printNotes", "printLogo"]),
-    notesFilter() {
-      let array: Note[] = this.notes,
-        search = this.search;
-      if (!search) return array;
-      // Small
-      search = search.trim().toLowerCase();
-      // Filter
-      array = array.filter(function(item) {
-        if (item.title.toLowerCase().indexOf(search) !== -1) {
-          return item;
-        }
-      });
-      // Error
-      return array;
-    }
+    ...mapGetters(["printNotes"]),
+    ...mapMutations(["notesFilter"])
+    // notesFilter() {
+    //   let array: Note[] = this.notes,
+    //     search = this.search;
+    //   if (!search) return array;
+    //   // Small
+    //   search = search.trim().toLowerCase();
+    //   // Filter
+    //   array = array.filter(function(item) {
+    //     if (item.title.toLowerCase().indexOf(search) !== -1) {
+    //       return item;
+    //     }
+    //   });
+    //   // Error
+    //   return array;
+    // }
   },
   methods: {
-    addNote(title: string, description: string) {
-      if (title === "") {
-        this.message = "Title can`t be blank!";
-        return false;
-      }
-      this.notes.push({
-        title,
-        description,
-        date: new Date(Date.now()).toLocaleString()
-      });
-      this.message = null;
-    },
-    removeNote(index: number): void {
-      this.notes.splice(index, 1);
-    }
+    ...mapMutations(["remoeNote"])
+    // addNote(title: string, description: string) {
+    //   if (title === "") {
+    //     this.message = "Title can`t be blank!";
+    //     return false;
+    //   }
+    //   this.notes.push({
+    //     title,
+    //     description,
+    //     date: new Date(Date.now()).toLocaleString()
+    //   });
+    //   this.message = null;
+    // },
+    // removeNote(index: number): void {
+    //   this.notes.splice(index, 1);
+    // }
   }
 });
 </script>

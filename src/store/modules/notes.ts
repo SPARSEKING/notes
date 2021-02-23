@@ -14,10 +14,11 @@ export default {
         date: new Date(Date.now()).toLocaleString()
       }
     ],
-    message: null
+    message: null,
+    search: ""
   },
   mutations: {
-    addNote(state: NotesApp, newNote: {title: string, description: string}) {
+    addNote(state: Notes, newNote: {title: string, description: string}) {
       const { title, description} = newNote;
       if (title === "") {
         state.message = "Title can`t be blank!";
@@ -29,6 +30,24 @@ export default {
         date: new Date(Date.now()).toLocaleString()
       });
       state.message = null;
+    },
+    notesFilter(state: Notes) {
+      let array = state.notes,
+        search = state.search;
+      if (!search) return array;
+      // Small
+      search = search.trim().toLowerCase();
+      // Filter
+      array = array.filter(function(item) {
+        if (item.title.toLowerCase().indexOf(search) !== -1) {
+          return item;
+        }
+      });
+      // Error
+      return array;
+    },
+    removeNote(state: Notes, newIndex: number){
+      state.notes.splice(newIndex, 1);
     }
   },
   actions: {
@@ -39,6 +58,10 @@ export default {
       }
 
       context.commit("addNote", newNote);
+    },
+    getIndex(context: any, index: number){
+      const newIndex = index;
+      context.commit("removeNote", newIndex);
     }
   },
   getters: {

@@ -1,10 +1,7 @@
 import { Note } from './Note';
 
 export interface NotesApp {
-  title?: string
-  message: string | null
+  title: string
   grid: boolean
-  search: string
   note?: Note
-  notes?: Note[]
 }
