@@ -70,8 +70,11 @@ const notes: Module<any, any> = {
       // Error
       return array;
     },
-    printMessage(state: Notes) {
+    message(state: Notes) {
       return state.message;
+    },
+    notes(state: Notes) {
+      return state.notes
     }
   }
 };

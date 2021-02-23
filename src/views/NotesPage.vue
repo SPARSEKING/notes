@@ -87,40 +87,10 @@ export default defineComponent({
     } as NotesApp;
   },
   computed: {
-    ...mapGetters(["notesFilter"])
-    // notesFilter() {
-    //   let array: Note[] = this.notes,
-    //     search = this.search;
-    //   if (!search) return array;
-    //   // Small
-    //   search = search.trim().toLowerCase();
-    //   // Filter
-    //   array = array.filter(function(item) {
-    //     if (item.title.toLowerCase().indexOf(search) !== -1) {
-    //       return item;
-    //     }
-    //   });
-    //   // Error
-    //   return array;
-    // }
+    ...mapGetters(["notesFilter", "message"])
   },
   methods: {
     ...mapMutations(["removeNote", "addNote"])
-    // addNote(title: string, description: string) {
-    //   if (title === "") {
-    //     this.message = "Title can`t be blank!";
-    //     return false;
-    //   }
-    //   this.notes.push({
-    //     title,
-    //     description,
-    //     date: new Date(Date.now()).toLocaleString()
-    //   });
-    //   this.message = null;
-    // },
-    // removeNote(index: number): void {
-    //   this.notes.splice(index, 1);
-    // }
   }
 });
 </script>

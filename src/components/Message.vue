@@ -1,6 +1,6 @@
 <template>
   <div class="message">
-    <p>{{ printMessage }}</p>
+    <p>{{ message }}</p>
   </div>
 </template>
 
@@ -9,8 +9,8 @@ import { defineComponent } from "vue";
 import { mapGetters } from "vuex";
 export default defineComponent({
   name: "Message",
-  methods: {
-    ...mapGetters(["printMessage"])
+  computed: {
+    ...mapGetters(["message"])
   }
 });
 </script>
