@@ -56,6 +56,7 @@
             </div>
           </div>
           <notes :notes="notesFilter" :grid="grid" @remove="removeNote" />
+          <edit v-if="edit" />
         </div>
       </section>
     </div>
@@ -69,6 +70,7 @@ import message from "@/components/Message.vue";
 import newNote from "@/components/NewNote.vue";
 import notes from "@/components/Notes.vue";
 import search from "@/components/Search.vue";
+import edit from "@/components/Edit.vue";
 import { NotesApp } from "@/NotesApp";
 
 export default defineComponent({
@@ -77,7 +79,8 @@ export default defineComponent({
     message,
     newNote,
     notes,
-    search
+    search,
+    edit
   },
   data() {
     return {
@@ -87,7 +90,7 @@ export default defineComponent({
     } as NotesApp;
   },
   computed: {
-    ...mapGetters(["notesFilter", "message"])
+    ...mapGetters(["notesFilter", "message", "edit"])
   },
   methods: {
     ...mapMutations(["removeNote", "addNote"])

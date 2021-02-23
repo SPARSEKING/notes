@@ -1,5 +1,4 @@
 import { Notes } from "@/Notes";
-import { NotesApp } from "@/NotesApp";
 import { Module } from 'vuex';
 
 const notes: Module<any, any> = {
@@ -17,7 +16,9 @@ const notes: Module<any, any> = {
       }
     ],
     message: null,
-    search: ""
+    search: "",
+    edit: false,
+    indexNote: null
   },
   mutations: {
     addNote(state: Notes, newNote: {title: string, description: string}) {
@@ -35,6 +36,13 @@ const notes: Module<any, any> = {
     },
     removeNote(state: Notes, newIndex: number){
       state.notes.splice(newIndex, 1);
+    },
+    showEdit(state: Notes, editIndex: number) {
+      state.indexNote = editIndex;
+      state.edit = !state.edit;
+    },
+    close(state: Notes) {
+      state.edit = !state.edit;
     }
   },
   actions: {
@@ -43,12 +51,15 @@ const notes: Module<any, any> = {
         title,
         description
       }
-
       context.commit("addNote", newNote);
     },
-    getIndex(context: any, index: number){
-      const newIndex = index;
-      context.commit("removeNote", newIndex);
+    getIndex(context: any, index: number) {
+        const newIndex = index;
+        context.commit("removeNote", newIndex);
+    },
+    getIndexEditNote(context: any, index: number) {
+      const editIndex = index;
+      context.commit("showNote", editIndex);
     }
   },
   getters: {
@@ -59,15 +70,12 @@ const notes: Module<any, any> = {
       let array = state.notes,
         search = state.search;
       if (!search) return array;
-      // Small
       search = search.trim().toLowerCase();
-      // Filter
       array = array.filter(function(item) {
         if (item.title.toLowerCase().indexOf(search) !== -1) {
           return item;
         }
       });
-      // Error
       return array;
     },
     message(state: Notes) {
@@ -75,6 +83,12 @@ const notes: Module<any, any> = {
     },
     notes(state: Notes) {
       return state.notes
+    },
+    edit(state: Notes){
+      return state.edit;
+    },
+    indexNote(state: Notes) {
+      return state.indexNote;
     }
   }
 };
