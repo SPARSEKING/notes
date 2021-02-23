@@ -6,7 +6,7 @@
           <message v-if="message" :message="message" />
           <new-note :note="note" @addNote="addNote" />
           <div class="note-head">
-            <h1 class="container-title">{{ title }}</h1>
+            <h1 class="container-title">{{ printLogo }}</h1>
             <search
               :value="search"
               placeholder="Find your note"
@@ -55,7 +55,7 @@
               </svg>
             </div>
           </div>
-          <notes :notes="notesFilter" :grid="grid" @remove="removeNote" />
+          <notes :notes="printNotes" :grid="grid" @remove="removeNote" />
         </div>
       </section>
     </div>
@@ -63,6 +63,7 @@
 </template>
 
 <script lang="ts">
+import { mapGetters } from "vuex";
 import { defineComponent } from "vue";
 import message from "@/components/Message.vue";
 import newNote from "@/components/NewNote.vue";
@@ -81,29 +82,13 @@ export default defineComponent({
   },
   data() {
     return {
-      title: "Notes App",
       message: null,
       grid: true,
-      search: "",
-      note: {
-        title: "",
-        description: ""
-      },
-      notes: [
-        {
-          title: "Vue",
-          description: "Vue is very nice framework!",
-          date: new Date(Date.now()).toLocaleString()
-        },
-        {
-          title: "Angular",
-          description: "Angular is a not bad framework",
-          date: new Date(Date.now()).toLocaleString()
-        }
-      ]
+      search: ""
     } as NotesApp;
   },
   computed: {
+    ...mapGetters(["printNotes", "printLogo"]),
     notesFilter() {
       let array: Note[] = this.notes,
         search = this.search;
