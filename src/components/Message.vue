@@ -1,19 +1,16 @@
 <template>
   <div class="message">
-    <p>{{ message }}</p>
+    <p>{{ printMessage }}</p>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import { mapGetters } from "vuex";
 export default defineComponent({
   name: "Message",
-  props: {
-    message: {
-      type: String,
-      required: true
-    }
+  methods: {
+    ...mapGetters(["printMessage"])
   }
 });
 </script>

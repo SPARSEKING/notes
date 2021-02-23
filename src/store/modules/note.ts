@@ -1,5 +1,7 @@
 import { NotesApp } from "@/NotesApp";
-export default {
+import { Module } from 'vuex'
+
+const note: Module<any, any> ={
   state: {
     note: {
       title: "",
@@ -14,3 +16,5 @@ export default {
     }
   }
 };
+
+export default note;

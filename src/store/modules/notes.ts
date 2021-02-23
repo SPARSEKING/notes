@@ -1,6 +1,8 @@
 import { Notes } from "@/Notes";
 import { NotesApp } from "@/NotesApp";
-export default {
+import { Module } from 'vuex';
+
+const notes: Module<any, any> = {
   state: {
     notes: [
       {
@@ -22,7 +24,7 @@ export default {
       const { title, description} = newNote;
       if (title === "") {
         state.message = "Title can`t be blank!";
-        return false;
+        return;
       }
       state.notes?.push({
         title,
@@ -30,6 +32,28 @@ export default {
         date: new Date(Date.now()).toLocaleString()
       });
       state.message = null;
+    },
+    removeNote(state: Notes, newIndex: number){
+      state.notes.splice(newIndex, 1);
+    }
+  },
+  actions: {
+    acceptNote(context: any, {title, description}) {
+      const newNote = {
+        title,
+        description
+      }
+
+      context.commit("addNote", newNote);
+    },
+    getIndex(context: any, index: number){
+      const newIndex = index;
+      context.commit("removeNote", newIndex);
+    }
+  },
+  getters: {
+    printNotes(state: Notes) {
+      return state.notes;
     },
     notesFilter(state: Notes) {
       let array = state.notes,
@@ -46,27 +70,10 @@ export default {
       // Error
       return array;
     },
-    removeNote(state: Notes, newIndex: number){
-      state.notes.splice(newIndex, 1);
-    }
-  },
-  actions: {
-    acceptNote(context: any, title: string, description: string) {
-      const newNote = {
-        title,
-        description
-      }
-
-      context.commit("addNote", newNote);
-    },
-    getIndex(context: any, index: number){
-      const newIndex = index;
-      context.commit("removeNote", newIndex);
-    }
-  },
-  getters: {
-    printNotes(state: Notes) {
-      return state.notes;
+    printMessage(state: Notes) {
+      return state.message;
     }
   }
 };
+
+export default notes;

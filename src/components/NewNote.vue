@@ -19,7 +19,10 @@ export default defineComponent({
   },
   methods: {
     addNote(): void {
-      this.$emit("addNote", this.title, this.description);
+      this.$emit("addNote", {
+        title: this.title,
+        description: this.description
+      });
       this.title = "";
       this.description = "";
     }

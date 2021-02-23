@@ -3,7 +3,7 @@
     <div class="wrapper-content">
       <section>
         <div class="container">
-          <message v-if="message" :message="message" />
+          <message v-if="message" />
           <new-note :note="note" @addNote="addNote" />
           <div class="note-head">
             <h1 class="container-title">{{ title }}</h1>
@@ -82,14 +82,12 @@ export default defineComponent({
   data() {
     return {
       title: "Notes App",
-      message: null,
       grid: true,
       search: ""
     } as NotesApp;
   },
   computed: {
-    ...mapGetters(["printNotes"]),
-    ...mapMutations(["notesFilter"])
+    ...mapGetters(["notesFilter"])
     // notesFilter() {
     //   let array: Note[] = this.notes,
     //     search = this.search;
@@ -107,7 +105,7 @@ export default defineComponent({
     // }
   },
   methods: {
-    ...mapMutations(["remoeNote"])
+    ...mapMutations(["removeNote", "addNote"])
     // addNote(title: string, description: string) {
     //   if (title === "") {
     //     this.message = "Title can`t be blank!";
